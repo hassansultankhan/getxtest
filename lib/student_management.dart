@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_test2/quad_formation.dart';
 import 'package:getx_test2/student_list.dart';
-import 'package:getx_test2/student_detail.dart';
+import 'anotherpage.dart';
 
 class StudentManagement extends StatelessWidget {
   final quadController = Get.put(QuadContoller());
@@ -12,6 +12,11 @@ class StudentManagement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.teal,
+        appBar: AppBar(
+          leading: IconButton(onPressed: (){
+            Get.to(anotherpage());
+          }, icon: Icon(Icons.details)),
+        ),
         body: SafeArea(
             child: Column(
           children: [
@@ -66,17 +71,28 @@ class StudentManagement extends StatelessWidget {
                     );
                   });
             })),
-            GetX<QuadContoller>(builder: (controller) {
-              return 
-              Column(
-                children: [
-              Text(
-                "Quad: ${controller.quadFormation.length}",);
-                Text()
-                "members: ${controller.quadFormation.[]}"
-                ],
-              );
-            })
+           GetX<QuadContoller>(builder: (controller) {
+  // Concatenate all student names in quadFormation into a single string
+  String quadNames = controller.quadFormation
+      .map((student) => student.name)
+      .join(", "); // Joining names with a comma
+
+  return Column(
+    children: [
+      Text("Quad: ${controller.quadFormation.length}"),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          "Names: $quadNames",
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+      ),
+    ],
+  );
+})
+
+
+
           ],
         )));
   }
